@@ -1,10 +1,9 @@
 <?php
     include ("../database/connection.php");
 
-
     $sql = 'select * from tb_conexoes';
 
-    $result = pg_exec($conectar,$sql);
+    $result = pg_exec($conectarlocal,$sql);
 ?>
 
 <!doctype html>
@@ -40,7 +39,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="src/conexao.php"><font color="#223A5E">Conexões</font></a>
+                <a class="nav-link" href="conexao.php"><font color="#223A5E">Conexões</font></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="src/config_con.php"><font color="#223A5E">Integração</font></a>
@@ -74,13 +73,32 @@
                     <td class="text-center">
                     <?php
                         if (($valor == 1) and ($valor == $dados_conexao['id'])) {
-                            echo "CONECTADO!";
+
+                            $sqlConexao1 = 'Select * from tb_conexoes';
+                            $conexao = pg_exec($conectarlocal,$sqlConexao1);
+
+                            if ($conexao)
+                            {
+                                echo "CONECTADO AO BANCO DE DADOS LOCAL!";
+                            }
                         }
                         if (($valor == 2) and ($valor == $dados_conexao['id'])) {
-                            echo "CONECTADO!";
+                          $sqlConexao1 = 'Select count(*) from tb_cidadao';
+                          $conexao = pg_exec($conectarESUS,$sqlConexao1);
+
+                          if ($conexao)
+                          {
+                              echo "CONECTADO AO BANCO DE DADOS ESUS!";
+                          }
                         }
                         if (($valor == 3) and ($valor == $dados_conexao['id'])) {
-                            echo "CONECTADO!";
+                          $sqlConexao1 = 'Select count(*) from tb_tuber_sinan';
+                          $conexao = pg_exec($conectarSINAN,$sqlConexao1);
+
+                          if ($conexao)
+                          {
+                              echo "CONECTADO AO BANCO DE DADOS SINAN!";
+                          }
                         }  
                     ?>
                     </td>
