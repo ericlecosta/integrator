@@ -40,7 +40,7 @@
     <div style="text-align: center; vertical-align: middle;" class="container">
         <h2><b>Integração de dados dos sistemas e-SUS e SINAN</b></h2>
         <h2><b>para colaborar no controle dos casos de tuberculose</b></h2>
-        <img src="img/img_pulmao.png" width="900" height="600" />
+        <img src="img/img_pulmao.png" width="900" height="550" />
     </div>
 
 
