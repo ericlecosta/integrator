@@ -37,10 +37,12 @@
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <div style="text-align: center;" class="container">
-        <h5>Ferramenta para integração de dados dos sistemas</h5>
-        <h5>e-SUS e SINAN para apoiar o controle dos casos de tuberculose</h5>
+    <div style="text-align: center; vertical-align: middle;" class="container">
+        <h2><b>Integração de dados dos sistemas e-SUS e SINAN</b></h2>
+        <h2><b>para colaborar no controle dos casos de tuberculose</b></h2>
+        <img src="img/img_pulmao.png" width="900" height="600" />
     </div>
+
 
   </body>
 </html>
