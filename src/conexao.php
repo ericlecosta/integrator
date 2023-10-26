@@ -32,7 +32,7 @@
   <body>
     <nav style="background-color: #3B8C6E!important;" class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href=""><font color="#223A5E"><b>TB BI</b></font></a>
+          <a class="navbar-brand" href="../index.php"><font color="#223A5E"><b>TB BI</b></font></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -61,7 +61,7 @@
         </thead>
         <tbody>
             <?php
-                $valor = isset($_GET['id'])?$_GET['id']:0;
+                $idBanco = isset($_GET['id'])?$_GET['id']:0;
 
                 while ($dados_conexao = pg_fetch_assoc($result))
                 {
@@ -72,32 +72,33 @@
                     <td class="text-center"><button style="background-color: #F2EBBF;" class="btn">Configuração</button>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Teste</button></a></td>
                     <td class="text-center">
                     <?php
-                        if (($valor == 1) and ($valor == $dados_conexao['id'])) {
+                        if (($idBanco == 1) and ($idBanco == $dados_conexao['id'])) {
 
-                            $sqlConexao1 = 'Select * from tb_conexoes';
-                            $conexao = pg_exec($conectarlocal,$sqlConexao1);
+                            $sqlConexao1 = 'Select count(*) from dbsinan.tb_usuario_sinan';
+                            
+                            $conexao = pg_exec($conectarSINAN,$sqlConexao1);
 
                             if ($conexao)
                             {
-                                echo "CONECTADO AO BANCO DE DADOS LOCAL!";
+                                echo "CONECTADO AO BANCO DE DADOS DO SINAN!";
                             }
                         }
                         if (($valor == 2) and ($valor == $dados_conexao['id'])) {
-                          $sqlConexao1 = 'Select count(*) from tb_cidadao';
+                          $sqlConexao1 = 'Select count(*) from tb_dim_equipe';
                           $conexao = pg_exec($conectarESUS,$sqlConexao1);
 
                           if ($conexao)
                           {
-                              echo "CONECTADO AO BANCO DE DADOS ESUS!";
+                              echo "CONECTADO AO BANCO DE DADOS DO ESUS!";
                           }
                         }
                         if (($valor == 3) and ($valor == $dados_conexao['id'])) {
-                          $sqlConexao1 = 'Select count(*) from tb_tuber_sinan';
-                          $conexao = pg_exec($conectarSINAN,$sqlConexao1);
+                          $sqlConexao1 = 'Select * from tb_conexoes';
+                          $conexao = pg_exec($conectarlocal,$sqlConexao1);
 
                           if ($conexao)
                           {
-                              echo "CONECTADO AO BANCO DE DADOS SINAN!";
+                              echo "CONECTADO AO BANCO DE DADOS DE INTEGRAÇÃO!";
                           }
                         }  
                     ?>
