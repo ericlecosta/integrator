@@ -1,9 +1,13 @@
 <?php
     include ("../database/connection.php");
+    ini_set('display_errors', 0);    
 
     $sql = 'select * from tb_conexoes';
 
+    $conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
     $result = pg_exec($conectarlocal,$sql);
+    pg_close ($conectarlocal);
+
 ?>
 
 <!doctype html>
@@ -68,37 +72,36 @@
             ?>            
             <tr>
                 <!-- <form action="conexao.php" method="post"> -->
-                    <td class="text-center"><input class="text-center" name="" type="text" value="" readonly><?php echo $dados_conexao['conexao']; ?></td>
+                    <td class="text-center"><?php echo $dados_conexao['conexao']; ?></td>
                     <td class="text-center"><button style="background-color: #F2EBBF;" class="btn">Configuração</button>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Teste</button></a></td>
                     <td class="text-center">
                     <?php
+                        // Verificar a conexão com o SINAN
                         if (($idBanco == 1) and ($idBanco == $dados_conexao['id'])) {
-
-                            $sqlConexao1 = 'Select count(*) from dbsinan.tb_usuario_sinan';
-                            
-                            $conexao = pg_exec($conectarSINAN,$sqlConexao1);
-
-                            if ($conexao)
-                            {
-                                echo "CONECTADO AO BANCO DE DADOS DO SINAN!";
-                            }
+                              if ($conectarSINAN = @pg_connect("host=$ServidorSinan port=$portaSinan dbname=$bdSinan user=$usuarioSinan password=$senhaSinan"))
+                              {
+                                pg_close ($conectarSINAN);
+                                echo "Conectado";
+                              } else {
+                                echo "Não Conectado";
+                              }
                         }
                         if (($idBanco == 2) and ($idBanco == $dados_conexao['id'])) {
-                          $sqlConexao1 = 'Select count(*) from tb_dim_equipe';
-                          $conexao = pg_exec($conectarESUS,$sqlConexao1);
-
-                          if ($conexao)
+                          if ($conectarESUS = @pg_connect("host=$ServidorEsus port=$portaEsus dbname=$bdEsus user=$usuarioEsus password=$senhaEsus"))
                           {
-                              echo "CONECTADO AO BANCO DE DADOS DO ESUS!";
+                            pg_close ($conectarESUS);
+                            echo "Conectado";
+                          } else {
+                            echo "Não Conectado";
                           }
                         }
                         if (($idBanco == 3) and ($idBanco == $dados_conexao['id'])) {
-                          $sqlConexao1 = 'Select * from tb_conexoes';
-                          $conexao = pg_exec($conectarlocal,$sqlConexao1);
-
-                          if ($conexao)
+                          if ($conectarIntegracao = @pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao"))
                           {
-                              echo "CONECTADO AO BANCO DE DADOS DE INTEGRAÇÃO!";
+                            pg_close ($conectarIntegracao);
+                            echo "Conectado";
+                          } else {
+                            echo "Não Conectado";
                           }
                         }  
                     ?>
