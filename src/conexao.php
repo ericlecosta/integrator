@@ -83,7 +83,7 @@
                                 echo "CONECTADO AO BANCO DE DADOS DO SINAN!";
                             }
                         }
-                        if (($valor == 2) and ($valor == $dados_conexao['id'])) {
+                        if (($idBanco == 2) and ($idBanco == $dados_conexao['id'])) {
                           $sqlConexao1 = 'Select count(*) from tb_dim_equipe';
                           $conexao = pg_exec($conectarESUS,$sqlConexao1);
 
@@ -92,7 +92,7 @@
                               echo "CONECTADO AO BANCO DE DADOS DO ESUS!";
                           }
                         }
-                        if (($valor == 3) and ($valor == $dados_conexao['id'])) {
+                        if (($idBanco == 3) and ($idBanco == $dados_conexao['id'])) {
                           $sqlConexao1 = 'Select * from tb_conexoes';
                           $conexao = pg_exec($conectarlocal,$sqlConexao1);
 
