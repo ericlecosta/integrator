@@ -118,7 +118,7 @@
                 <!-- </form> -->
             <?php
                 }
-                $sqlup = "UPDATE tb_conexoes SET st_conexao = '$desc_conexao' WHERE id = '$idBanco';";
+                $sqlup = "UPDATE tb_conexoes SET st_conexao = '$desc_conexao', dt_conexao = now() WHERE id = '$idBanco';";
                 
                 $conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
                 $res = pg_exec($conectarlocal,$sqlup);
