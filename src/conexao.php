@@ -112,7 +112,6 @@
                           } 
                         }
                     ?>
-                    
                     </td>
                     <td class="text-center"><?php echo $dados_conexao['dt_conexao']; ?></td>
                     <td class="text-center" hidden><input type="text" id="valorId" name="valorId" value=<?php echo $dados_conexao['id']; ?>></td>
