@@ -6,9 +6,10 @@
 
     $conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
     $result = pg_exec($conectarlocal,$sql);
+    
     pg_close ($conectarlocal);
-
-?>
+    
+?> 
 
 <!doctype html>
 <style> 
@@ -33,6 +34,12 @@
     <link rel="icon" href="../img/icone_tb_bi.png">
     <title>TB BI</title>
   </head>
+  <script>
+      function refreshPage() {
+        location.reload();
+        console.log("refresh")
+      }
+    </script>
   <body>
     <nav style="background-color: #3B8C6E!important;" class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
@@ -67,6 +74,9 @@
         <tbody>
             <?php
                 $idBanco = isset($_GET['id'])?$_GET['id']:0;
+
+                $a = isset($_GET['a'])?$_GET['a']:0;
+
                 $desc_conexao = '';
 
                 while ($dados_conexao = pg_fetch_assoc($result))
@@ -75,60 +85,67 @@
             <tr>
                 <!-- <form action="conexao.php" method="post"> -->
                     <td class="text-center"><?php echo $dados_conexao['conexao']; ?></td>
-                    <td class="text-center"><button style="background-color: #F2EBBF;" class="btn">Configuração</button>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Teste</button></a></td>
+                    <td class="text-center"><button style="background-color: #F2EBBF;" class="btn">Configuração</button>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>&a=<?php if($a == 1){$a = 0;}else{$a = 1;} echo $a; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Teste</button></a></td>
                     <td class="text-center">
                     <?php
-                        echo $dados_conexao['st_conexao'];
-                                              
-
+                            echo $dados_conexao['st_conexao'];
                         // Verificar a conexão com o SINAN
                         if ($dados_conexao['st_conexao'] <> '' and $idBanco <> 0) {
-                          if (($idBanco == 1) and ($idBanco == $dados_conexao['id'])) {
-                                if ($conectarSINAN = @pg_connect("host=$ServidorSinan port=$portaSinan dbname=$bdSinan user=$usuarioSinan password=$senhaSinan"))
+                              if (($idBanco == 1) and ($idBanco == $dados_conexao['id'])) {
+                                    if ($conectarSINAN = @pg_connect("host=$ServidorSinan port=$portaSinan dbname=$bdSinan user=$usuarioSinan password=$senhaSinan"))
+                                    {
+                                      pg_close ($conectarSINAN);
+                                      $desc_conexao = "Conectado";
+                                    } else {
+                                      $desc_conexao = "Não Conectado";
+                                    }
+                              }
+                              if (($idBanco == 2) and ($idBanco == $dados_conexao['id'])) {
+                                if ($conectarESUS = @pg_connect("host=$ServidorEsus port=$portaEsus dbname=$bdEsus user=$usuarioEsus password=$senhaEsus"))
                                 {
-                                  pg_close ($conectarSINAN);
+                                  pg_close ($conectarESUS);
                                   $desc_conexao = "Conectado";
                                 } else {
                                   $desc_conexao = "Não Conectado";
                                 }
+                              }
+                              if (($idBanco == 3) and ($idBanco == $dados_conexao['id'])) {
+                                if ($conectarIntegracao = @pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao"))
+                                {
+                                  pg_close ($conectarIntegracao);
+                                  $desc_conexao = "Conectado";
+                                } else {
+                                  $desc_conexao = "Não Conectado";
+                                }
+                              }
                           }
-                          if (($idBanco == 2) and ($idBanco == $dados_conexao['id'])) {
-                            if ($conectarESUS = @pg_connect("host=$ServidorEsus port=$portaEsus dbname=$bdEsus user=$usuarioEsus password=$senhaEsus"))
-                            {
-                              pg_close ($conectarESUS);
-                              $desc_conexao = "Conectado";
-                            } else {
-                              $desc_conexao = "Não Conectado";
-                            }
-                          }
-                          if (($idBanco == 3) and ($idBanco == $dados_conexao['id'])) {
-                            if ($conectarIntegracao = @pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao"))
-                            {
-                              pg_close ($conectarIntegracao);
-                              $desc_conexao = "Conectado";
-                            } else {
-                              $desc_conexao = "Não Conectado";
-                            }
-                          } 
-                        }
                     ?>
                     </td>
                     <td class="text-center"><?php echo $dados_conexao['dt_conexao']; ?></td>
-                    <td class="text-center" hidden><input type="text" id="valorId" name="valorId" value=<?php echo $dados_conexao['id']; ?>></td>
+                    <td class="text-center" hidden><input type="text" id="<?php echo $dados_conexao['id']+1; ?>" name="valorId" value=<?php echo $dados_conexao['id']; ?>></td>
                 <!-- </form> -->
             <?php
                 }
-                $sqlup = "UPDATE tb_conexoes 
-                          SET st_conexao = '$desc_conexao', dt_conexao = now() 
-                          WHERE id = '$idBanco';";
-                
-                $conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
-                $res = pg_exec($conectarlocal,$sqlup);
+                $cont = 0;
+                echo $desc_conexao;
+                echo " a: ".$a;
+                if($desc_conexao <> '' and $a == 1) {
+                  $cont = $cont + 1;
+                  $sqlup = "UPDATE tb_conexoes 
+                            SET st_conexao = '$desc_conexao', dt_conexao = now() 
+                            WHERE id = '$idBanco';";
+                  
+                  $conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
+                  $res = pg_exec($conectarlocal,$sqlup);
 
-                $sql = 'select * from tb_conexoes order by id';
-                $result = pg_exec($conectarlocal,$sql);
+                  $sql = 'select * from tb_conexoes order by id';
+                  $result = pg_exec($conectarlocal,$sql);
 
-                pg_close ($conectarlocal);
+                  pg_close ($conectarlocal);
+                  
+                  echo "<meta HTTP-EQUIV='refresh' CONTENT='0'>";
+                  echo "<a href=conexao.php?id=>";
+                }
             ?>
             </tr>
         </tbody>
