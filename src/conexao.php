@@ -85,7 +85,7 @@
             <tr>
                 <!-- <form action="conexao.php" method="post"> -->
                     <td class="text-center"><?php echo $dados_conexao['conexao']; ?></td>
-                    <td class="text-center"><button style="background-color: #F2EBBF;" class="btn">Configuração</button>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>&a=<?php if($a == 1){$a = 0;}else{$a = 1;} echo $a; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Teste</button></a></td>
+                    <td class="text-center"><button style="background-color: #F2EBBF;" class="btn">Configuração</button>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>&a=<?php echo $a; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Teste</button></a></td>
                     <td class="text-center">
                     <?php
                             echo $dados_conexao['st_conexao'];
@@ -142,6 +142,8 @@
                   $result = pg_exec($conectarlocal,$sql);
 
                   pg_close ($conectarlocal);
+
+                  if($a == 1){$a = 0;}else{$a = 1;} 
                   
                   echo "<meta HTTP-EQUIV='refresh' CONTENT='0'>";
                   echo "<a href=conexao.php?id=>";
