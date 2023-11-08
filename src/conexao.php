@@ -50,7 +50,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="conexao.php"><font color="#223A5E">Conexões</font></a>
+                <a class="nav-link" href="conexao.php"><font color="#223A5E">Configuração</font></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="src/config_con.php"><font color="#223A5E">Integração</font></a>
@@ -66,7 +66,7 @@
             <tr style="background-color: #B4BEC9!important;">
                 <th class="col">Base de Dados</th>
                 <th class="col">Ações</th>
-                <th class="col">Conexão</th>
+                <th class="col">Status Conexão</th>
                 <th class="col">Verificação</th>
                 <th class="col" hidden>Id</th>
             </tr>
@@ -74,8 +74,6 @@
         <tbody>
             <?php
                 $idBanco = isset($_GET['id'])?$_GET['id']:0;
-
-                $a = isset($_GET['a'])?$_GET['a']:0;
 
                 $desc_conexao = '';
 
@@ -85,7 +83,7 @@
             <tr>
                 <!-- <form action="conexao.php" method="post"> -->
                     <td class="text-center"><?php echo $dados_conexao['conexao']; ?></td>
-                    <td class="text-center"><button style="background-color: #F2EBBF;" class="btn">Configuração</button>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>&a=<?php echo $a; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Teste</button></a></td>
+                    <td class="text-center"><a href="config_con.php?id=<?php echo $dados_conexao['id'];?>"><button style="background-color: #F2EBBF;" class="btn">Configurar</button>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Testar</button></a></td>
                     <td class="text-center">
                     <?php
                             echo $dados_conexao['st_conexao'];
@@ -126,10 +124,8 @@
                 <!-- </form> -->
             <?php
                 }
-                $cont = 0;
-                echo $desc_conexao;
-                echo " a: ".$a;
-                if($desc_conexao <> '' and $a == 1) {
+
+                if($desc_conexao <> '') {
                   $cont = $cont + 1;
                   $sqlup = "UPDATE tb_conexoes 
                             SET st_conexao = '$desc_conexao', dt_conexao = now() 
@@ -142,11 +138,9 @@
                   $result = pg_exec($conectarlocal,$sql);
 
                   pg_close ($conectarlocal);
-
-                  if($a == 1){$a = 0;}else{$a = 1;} 
                   
-                  echo "<meta HTTP-EQUIV='refresh' CONTENT='0'>";
-                  echo "<a href=conexao.php?id=>";
+                  echo "<meta HTTP-EQUIV='refresh' CONTENT='0;URL=http://localhost/integrator/src/conexao.php'>";
+
                 }
             ?>
             </tr>
