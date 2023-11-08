@@ -24,7 +24,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="src/conexao.php"><font color="#223A5E">Conexões</font></a>
+                <a class="nav-link" href="src/conexao.php"><font color="#223A5E">Configuração</font></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="src/config_con.php"><font color="#223A5E">Integração</font></a>
