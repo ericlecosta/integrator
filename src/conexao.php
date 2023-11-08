@@ -119,7 +119,7 @@
             <?php
                 }
                 $sqlup = "UPDATE tb_conexoes 
-                          SET st_conexao = '$desc_conexao', dt_conexao = now() 
+                          SET st_conexao = '$desc_conexao', dt_conexao = current_timestamp 
                           WHERE id = '$idBanco';";
                 
                 $conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
