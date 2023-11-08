@@ -66,7 +66,8 @@
                 <div class="col-2" ><font color="#0D65D9"><b>User:</b></font><input style = "border: 1px solid silver;" name="user_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['usuario']; ?>"></div>
                 <div class="col-2" ><font color="#0D65D9"><b>Password:</b></font><input style = "border: 1px solid silver;" name="password_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['senha']; ?>"></div>
             </div>
-            <div style="color:#00BFFF;" class="container p-2">{{ st_altera }}</div>
+            <div class="mt-4"> <button type="button" class="btn btn-primary">Salvar</button> 
+                  <button type="button" class="btn btn-primary">Excluir</button></div>
         </div>
     </form>
    

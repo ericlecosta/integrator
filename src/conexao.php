@@ -83,7 +83,7 @@
             <tr>
                 <!-- <form action="conexao.php" method="post"> -->
                     <td class="text-center"><?php echo $dados_conexao['conexao']; ?></td>
-                    <td class="text-center"><a href="config_con.php?id=<?php echo $dados_conexao['id'];?>"><button style="background-color: #F2EBBF;" class="btn">Configurar</button>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Testar</button></a></td>
+                    <td class="text-center"><a href="config_con.php?id=<?php echo $dados_conexao['id'];?>"><button style="background-color: #F2EBBF;" class="btn">Configurar</button></a>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Testar</button></a></td>
                     <td class="text-center">
                     <?php
                             echo $dados_conexao['st_conexao'];
