@@ -22,14 +22,16 @@ $res = pg_exec($conectarlocal,$sqlup);
 
 pg_close ($conectarlocal);
 
+$st_update = '';
+
 if($id_bd <> 3) {
     if($res) {
-        echo "Registro salvo com sucesso!";
+        $st_update = "Registro salvo com sucesso!";
     } else {
-        echo "Não foi possível salvar registro!";
+        $st_update = "Não foi possível salvar registro!";
     }
 } else {
-    echo "Não é possível alterar esta conexão!";
+    $st_update = "Não é possível alterar esta conexão!";
 }
 ?>
 
@@ -52,7 +54,7 @@ if($id_bd <> 3) {
 
     <nav style="background-color: #3B8C6E!important;" class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href=""><font color="#223A5E"><b>TB BI</b></font></a>
+          <a class="navbar-brand" href="../index.php"><font color="#223A5E"><b>TB BI</b></font></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -73,9 +75,8 @@ if($id_bd <> 3) {
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <div style="text-align: center; vertical-align: middle;" class="container">
-        <h2><b>Integração de dados dos sistemas e-SUS e SINAN</b></h2>
-        <h2><b>para colaborar no controle dos casos de tuberculose</b></h2>
-        <img src="img/img_pulmao.png" width="900" height="550" />
+        <h4 style="margin: 35px;"><b><?php echo $st_update ?></b></h4>
+        <a href="conexao.php?"><button style="margin-right: 10px;" type="button" class="btn btn-primary">Voltar</button>
     </div>
 
 
