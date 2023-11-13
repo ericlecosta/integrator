@@ -1,6 +1,6 @@
 <?php
     include ("../database/connection.php");
-    ini_set('display_errors', 0);    
+    //ini_set('display_errors', 0);    
 
     $sql = 'select * from tb_conexoes order by id';
 
@@ -8,6 +8,7 @@
     $result = pg_exec($conectarlocal,$sql);
     
     pg_close ($conectarlocal);
+
     
 ?> 
 
@@ -76,14 +77,22 @@
                 $idBanco = isset($_GET['id'])?$_GET['id']:0;
 
                 $desc_conexao = '';
-
+                
                 while ($dados_conexao = pg_fetch_assoc($result))
                 {
-            ?>            
+                  $idlink = $dados_conexao['id']; 
+                  /*$link1 = "<a href=config_con.php?id=<?php echo $dados_conexao['id'];?>"><button style="background-color: #F2EBBF;" class="btn">Configurar</button></a>*/
+            ?>           
             <tr>
                 <!-- <form action="conexao.php" method="post"> -->
                     <td class="text-center"><?php echo $dados_conexao['conexao']; ?></td>
-                    <td class="text-center"><a href="config_con.php?id=<?php echo $dados_conexao['id'];?>"><button style="background-color: #F2EBBF;" class="btn">Configurar</button></a>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Testar</button></a></td>
+                    <!-- <td class="text-center "><a href="config_con.php?id=<?php echo $dados_conexao['id'];?>"><button style="background-color: #F2EBBF;" class="btn">Configurar</button></a>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Testar</button></a></td> -->
+                    <td class="text-center "><a href="
+                    <?php if ($dados_conexao['id'] == 3)                          
+                          {echo "#"; }
+                          else 
+                          {echo "config_con.php?id=".$idlink; }
+                    ?>"><button style="background-color: <?php if($dados_conexao['id'] == 3) {echo "gray";} else {echo "#F2EBBF";}?>;" class="btn">Configurar</button></a>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Testar</button></a></td>
                     <td class="text-center">
                     <?php
                             echo $dados_conexao['st_conexao'];
@@ -126,7 +135,7 @@
                 }
 
                 if($desc_conexao <> '') {
-                  $cont = $cont + 1;
+                  //$cont = $cont + 1;
                   $sqlup = "UPDATE tb_conexoes 
                             SET st_conexao = '$desc_conexao', dt_conexao = now() 
                             WHERE id = '$idBanco';";

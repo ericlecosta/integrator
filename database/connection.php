@@ -1,18 +1,38 @@
 <?php
+
+$ServidorIntegracao = '172.17.135.151';
+$portaIntegracao = '5433';
+$bdIntegracao = 'serverdados';
+$usuarioIntegracao = 'postgres';
+$senhaIntegracao = 'esus'; 
+
+$sql = 'select * from tb_conexoes order by id';
+
+$conectar = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
+$result = pg_exec($conectar,$sql);
+
+pg_close ($conectar);
+
+while ($dados_conexao = pg_fetch_assoc($result))
+{
+
+    if($dados_conexao['id']==1){
+        $ServidorSinan = $dados_conexao['hostname'];
+        $portaSinan = $dados_conexao['porta'];
+        $bdSinan = $dados_conexao['base_dados'];
+        $usuarioSinan = $dados_conexao['usuario'];
+        $senhaSinan = $dados_conexao['senha'];
+    } elseif ($dados_conexao['id']==2){
+        $ServidorEsus =  $dados_conexao['hostname'];
+        $portaEsus = $dados_conexao['porta'];
+        $bdEsus = $dados_conexao['base_dados'];
+        $usuarioEsus = $dados_conexao['usuario'];
+        $senhaEsus = $dados_conexao['senha'];
+    }
+}
+
     // ****************** ACESSO AO BANCO DE DADOS DE INTEGRACAO
-
-    $ServidorIntegracao = '172.17.135.151';
-    $portaIntegracao = '5433';
-    $bdIntegracao = 'serverdados';
-    $usuarioIntegracao = 'postgres';
-    $senhaIntegracao = 'esus';
-
-    /* $Servidor = 'localhost';
-    $porta = '5432';
-    $bancodedados = 'postgres';
-    $usuario = 'postgres';
-    $senha = '123456'; */
-
+/*
     //$conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
 
     /*
@@ -30,12 +50,12 @@
 
     
     // ****************** ACESSO AO BANCO DE DADOS ESUS
-
+/*
     $ServidorEsus = '172.17.135.142';
     $portaEsus = '5433';
     $bdEsus = 'esus';
     $usuarioEsus = 'postgres';
-    $senhaEsus = 'esus';
+    $senhaEsus = 'esus'; */
 
     //$conectarESUS = pg_connect("host=$ServidorESUS port=$porta dbname=$bancodedados user=$usuario password=$senha");
 /*
@@ -51,12 +71,12 @@
     }  
 */    
     // ****************** ACESSO AO BANCO DE DADOS SINAN
-
+/*
     $ServidorSinan = '10.10.5.106';
     $portaSinan = '5445';
     $bdSinan = 'sinanpop92';
     $usuarioSinan = 'postgres';
-    $senhaSinan = '';
+    $senhaSinan = ''; */
 
 /*
     if(!$conectarSINAN)
