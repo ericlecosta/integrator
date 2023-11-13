@@ -133,16 +133,6 @@
                 <!-- </form> -->
             <?php
                 }
-<<<<<<< HEAD
-                $sqlup = "UPDATE tb_conexoes 
-                          SET st_conexao = '$desc_conexao', dt_conexao = current_timestamp 
-                          WHERE id = '$idBanco';";
-                
-                $conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
-                $res = pg_exec($conectarlocal,$sqlup);
-=======
->>>>>>> 9a6dc3c4b5f37a1e215b4f333180076e198f414f
-
                 if($desc_conexao <> '') {
                   //$cont = $cont + 1;
                   $sqlup = "UPDATE tb_conexoes 
