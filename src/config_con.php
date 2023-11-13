@@ -55,7 +55,7 @@
         </div>
       </nav>
 
-   <form action="salvar.php" method="get">
+   <form action="salvar_con.php" method="POST">
         <div class="container">
             <h3>Paramêtros de Conexão</h1>
             <h5><input style = "border: 0px; outline: none; color: #223A5E; font-weight: bold;" name="no_dados_p" type="text" value="<?php echo $dados_conexao['conexao']; ?>" readonly></h3>
@@ -67,8 +67,10 @@
                 <div class="col-2" ><font color="#0D65D9"><b>Password:</b></font><input style = "border: 1px solid silver;" name="password_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['senha']; ?>"></div>
                 <div class="col-2" hidden><input name="id_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['id']; ?>"></div>
             </div>
-            <div class="mt-4"> <button style="margin-right: 10px;" type="submit" class="btn btn-primary">Salvar</button> 
-                  <button style="margin-right: 10px;" type="button" class="btn btn-primary">Excluir</button>
+            <div class="mt-4"> <button style="margin-right: 10px;" type="submit" name="salvar" class="btn btn-primary">Salvar</button> 
+                  
+            <button style="margin-right: 10px;" type="submit" name="excluir" class="btn btn-primary">Excluir</button>
+
                   <a href="conexao.php?"><button style="margin-right: 10px;" type="button" class="btn btn-primary">Voltar</button></div>
         </div>
     </form>

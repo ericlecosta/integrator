@@ -3,13 +3,25 @@
 
 include ("../database/connection.php");
 
-$servidor = $_GET['host_p'];
-$db = $_GET['database_p'];
-$port= $_GET['port_p'];
-$user = $_GET['user_p'];
-$senha = $_GET['password_p'];
-$id_bd = $_GET['id_p'];
-echo "Servidor:<BR>".$servidor;
+$servidor = $_POST['host_p'];
+$db = $_POST['database_p'];
+$port= $_POST['port_p'];
+$user = $_POST['user_p'];
+$senha = $_POST['password_p'];
+$id_bd = $_POST['id_p'];
+echo $_SERVER['REQUEST_METHOD'];
+if (isset($_POST["salvar"])) {echo "botão salvar";}
+if (isset($_POST["excluir"])) {echo "botão excluir";}
+if($_SERVER['REQUEST_METHOD'] == "delete"){
+  parse_str(file_get_contents('php://input'),$_DELETE);
+  echo "contents of global DELETE variable:\n";
+  echo var_dump($_DELETE);
+  echo "contents of file get contents method:\n";
+  echo file_get_contents('php://input');
+}else{
+  
+
+
 
 
 $sqlup = "UPDATE tb_conexoes 
@@ -46,7 +58,7 @@ if($id_bd <> 3) {
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="icon" href="img/icone_tb_bi.png">
+    <link rel="icon" href="../img/icone_tb_bi.png">
     <title>TB BI - v1.3</title>
 
   </head>
@@ -82,3 +94,4 @@ if($id_bd <> 3) {
 
   </body>
 
+<?php } ?>
