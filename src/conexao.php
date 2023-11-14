@@ -93,7 +93,9 @@
                           else 
                           {echo "config_con.php?id=".$idlink; }
                     ?>"><button style="background-color: <?php if($dados_conexao['id'] == 3) {echo "gray";} else {echo "#F2EBBF";}?>;" class="btn">Configurar</button></a>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Testar</button></a></td>
-                    <td class="text-center"><font color="<?php if($dados_conexao['st_conexao']=='Conectado'){} ?>#223A5E">
+                    <td class="text-center"><font color="
+                    <?php if($dados_conexao['st_conexao']=='Conectado'){echo "##3CB371";} 
+                          elseif ($dados_conexao['st_conexao']=='Não Conectado'){echo "#DC143C";}?>">
                     <?php
                             echo $dados_conexao['st_conexao'];
                         // Verificar a conexão com o SINAN
