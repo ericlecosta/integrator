@@ -10,41 +10,53 @@ $user = $_POST['user_p'];
 $senha = $_POST['password_p'];
 $id_bd = $_POST['id_p'];
 echo $_SERVER['REQUEST_METHOD'];
-if (isset($_POST["salvar"])) {echo "botão salvar";}
-if (isset($_POST["excluir"])) {echo "botão excluir";}
-if($_SERVER['REQUEST_METHOD'] == "delete"){
-  parse_str(file_get_contents('php://input'),$_DELETE);
-  echo "contents of global DELETE variable:\n";
-  echo var_dump($_DELETE);
-  echo "contents of file get contents method:\n";
-  echo file_get_contents('php://input');
-}else{
-  
-
-
-
-
-$sqlup = "UPDATE tb_conexoes 
-SET hostname = '$servidor', base_dados = '$db', porta = '$port', usuario = '$user', senha = '$senha', 
-    st_conexao = 'Configurado', dt_conexao = null
-WHERE id = '$id_bd';";
-
-$conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
-$res = pg_exec($conectarlocal,$sqlup);
-
-pg_close ($conectarlocal);
-
 $st_update = '';
 
-if($id_bd <> 3) {
-    if($res) {
-        $st_update = "Registro salvo com sucesso!";
+if (isset($_POST["salvar"])) {
+    //echo "botão salvar";
+    $sqlup = "UPDATE tb_conexoes 
+    SET hostname = '$servidor', base_dados = '$db', porta = '$port', usuario = '$user', senha = '$senha', 
+        st_conexao = 'Configurado', dt_conexao = null
+    WHERE id = '$id_bd';";
+
+    $conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
+    $res = pg_exec($conectarlocal,$sqlup);
+
+    pg_close ($conectarlocal);
+
+    if($id_bd <> 3) {
+        if($res) {
+            $st_update = "Registro salvo com sucesso!";
+        } else {
+            $st_update = "Não foi possível salvar registro!";
+        }
     } else {
-        $st_update = "Não foi possível salvar registro!";
+        $st_update = "Não é possível alterar esta conexão!";
     }
-} else {
-    $st_update = "Não é possível alterar esta conexão!";
 }
+  if (isset($_POST["excluir"])) {
+    echo "botão excluir";
+    $sqlup = "UPDATE tb_conexoes 
+    SET hostname = null, base_dados = null, porta = null, usuario = null, senha = null, 
+        st_conexao = null, dt_conexao = null
+    WHERE id = '$id_bd';";
+
+    $conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
+    $res = pg_exec($conectarlocal,$sqlup);
+
+    pg_close ($conectarlocal);
+
+    if($id_bd <> 3) {
+      if($res) {
+          $st_update = "Registro excluído com sucesso!";
+      } else {
+          $st_update = "Não foi possível excluir registro!";
+      }
+    } else {
+      $st_update = "Não é possível alterar esta conexão!";
+  }
+}
+  
 ?>
 
 <!doctype html>
@@ -93,5 +105,3 @@ if($id_bd <> 3) {
 
 
   </body>
-
-<?php } ?>

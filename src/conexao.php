@@ -2,7 +2,7 @@
     include ("../database/connection.php");
     //ini_set('display_errors', 0);    
 
-    $sql = 'select * from tb_conexoes order by id';
+    $sql = "select * ,concat(TO_CHAR(dt_conexao ,'DD-MM-YYYY'),' ',TO_CHAR(dt_conexao AT TIME ZONE 'Brazil/West', 'HH24:MI:SS')) as dt_hh from tb_conexoes order by id;";
 
     $conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
     $result = pg_exec($conectarlocal,$sql);
@@ -93,7 +93,7 @@
                           else 
                           {echo "config_con.php?id=".$idlink; }
                     ?>"><button style="background-color: <?php if($dados_conexao['id'] == 3) {echo "gray";} else {echo "#F2EBBF";}?>;" class="btn">Configurar</button></a>&nbsp;<a href="conexao.php?id=<?php echo $dados_conexao['id']; ?>"><button id="teste" name="teste" value="3" style="background-color: #95BEF7;" class="btn">Testar</button></a></td>
-                    <td class="text-center">
+                    <td class="text-center"><font color="<?php if($dados_conexao['st_conexao']=='Conectado'){} ?>#223A5E">
                     <?php
                             echo $dados_conexao['st_conexao'];
                         // Verificar a conexão com o SINAN
@@ -126,17 +126,18 @@
                                 }
                               }
                           }
-                    ?>
+                    ?></font>
                     </td>
-                    <td class="text-center"><?php echo $dados_conexao['dt_conexao']; ?></td>
+                    <td class="text-center"><?php echo $dados_conexao['dt_hh']; ?></td>
                     <td class="text-center" hidden><input type="text" id="<?php echo $dados_conexao['id']+1; ?>" name="valorId" value=<?php echo $dados_conexao['id']; ?>></td>
                 <!-- </form> -->
             <?php
                 }
+
                 if($desc_conexao <> '') {
                   //$cont = $cont + 1;
                   $sqlup = "UPDATE tb_conexoes 
-                            SET st_conexao = '$desc_conexao', dt_conexao = now() 
+                            SET st_conexao = '$desc_conexao', dt_conexao = current_timestamp
                             WHERE id = '$idBanco';";
                   
                   $conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");

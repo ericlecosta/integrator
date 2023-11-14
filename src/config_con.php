@@ -61,10 +61,10 @@
             <h5><input style = "border: 0px; outline: none; color: #223A5E; font-weight: bold;" name="no_dados_p" type="text" value="<?php echo $dados_conexao['conexao']; ?>" readonly></h3>
             <div class="row">
                 <div class="col-2" ><font color="#0D65D9"><b>Servidor:</b></font><input style = "border: 1px solid silver;" name="host_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['hostname'];?>"></div>
-                <div class="col-2" ><font color="#0D65D9"><b>Database:</b></font><input style = "border: 1px solid silver;" name="database_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['base_dados']; ?>"></div>
-                <div class="col-2" ><font color="#0D65D9"><b>Port:</b></font><input style = "border: 1px solid silver;" name="port_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['porta']; ?>"></div>
-                <div class="col-2" ><font color="#0D65D9"><b>User:</b></font><input style = "border: 1px solid silver;" name="user_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['usuario']; ?>"></div>
-                <div class="col-2" ><font color="#0D65D9"><b>Password:</b></font><input style = "border: 1px solid silver;" name="password_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['senha']; ?>"></div>
+                <div class="col-2" ><font color="#0D65D9"><b>Banco de Dados:</b></font><input style = "border: 1px solid silver;" name="database_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['base_dados']; ?>"></div>
+                <div class="col-2" ><font color="#0D65D9"><b>Porta:</b></font><input style = "border: 1px solid silver;" name="port_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['porta']; ?>"></div>
+                <div class="col-2" ><font color="#0D65D9"><b>Usuário:</b></font><input style = "border: 1px solid silver;" name="user_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['usuario']; ?>"></div>
+                <div class="col-2" ><font color="#0D65D9"><b>Senha:</b></font><input type="password" style = "border: 1px solid silver;" name="password_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['senha']; ?>"></div>
                 <div class="col-2" hidden><input name="id_p" class="form-control-sm" type="text" value="<?php echo $dados_conexao['id']; ?>"></div>
             </div>
             <div class="mt-4"> <button style="margin-right: 10px;" type="submit" name="salvar" class="btn btn-primary">Salvar</button> 
