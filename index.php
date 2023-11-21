@@ -27,7 +27,7 @@
                 <a class="nav-link" href="src/conexao.php"><font color="#223A5E">Configuração</font></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="src/config_con.php"><font color="#223A5E">Integração</font></a>
+                <a class="nav-link" href="src/integracao.php"><font color="#223A5E">Integração</font></a>
               </li>
             </ul>
           </div>
