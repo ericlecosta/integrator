@@ -80,10 +80,12 @@
       <div class="mt-4 text-center"><a href="integracao.php?id=1"><button style="margin-right: 10px;" type="button" name="salvar" class="btn btn-dark">Executar Integração</button></a>
             <a href="conexao.php?"><button style="margin-right: 10px;" type="button" class="btn btn-primary">Voltar</button></a>
       </div>
-      <div class="mt-4 text-center"> <?php echo nl2br($result_exec); ?>
+      <div class="mt-4 text-center"> <?php echo nl2br($result_exec);?>
       </div>
       <?php
-      if($idexe==1 and )
+        if($idexe==1 || $st_conexao==0){
+          echo "fuckyou";
+        }
       ?>
   </body>
 </html>
