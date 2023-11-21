@@ -2,16 +2,39 @@
     include ("../database/connection.php");
     ini_set('display_errors', 0);    
 
-    //$idBanco = isset($_GET['id'])?$_GET['id']:0;
+    $string_result = "";
+    $idexe = isset($_GET['id'])?$_GET['id']:0;
 
-    //$sql = "select * from tb_conexoes where id = '$idBanco'";
+    if($idexe==1){
+      $sql = "select * from tb_conexoes";
+      $conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
+      $result = pg_exec($conectarlocal,$sql);
+      pg_close ($conectarlocal);
+
+      $st_conexao = 0;
+
+      while ($dados_conexao = pg_fetch_assoc($result))
+      {
+        if($dados_conexao['st_conexao'] <> 'Conectado'){
+          $st_conexao = $st_conexao+1;
+        }
+      }
+
+      if($st_conexao<>0){
+        $result_exec .= "# ERRO, Verificar parâmetros das conexões!!".PHP_EOL;
+      } else {
+        $result_exec .= "Conexões estabelecidas.".PHP_EOL;
+      }
+    }
+
+  
 
     //$conectarlocal = pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
     //$result = pg_exec($conectarlocal,$sql);
     
     //pg_close ($conectarlocal);
 
-    $result_exec = "Teste...";
+    //$result_exec = "Teste...";
     
 ?> 
 
@@ -54,8 +77,13 @@
           </div>
         </div>
       </nav>
-      <div class="mt-4 text-center"> <button style="margin-right: 10px;" type="submit" name="salvar" class="btn btn-dark">Executar Integração</button>
+      <div class="mt-4 text-center"><a href="integracao.php?id=1"><button style="margin-right: 10px;" type="button" name="salvar" class="btn btn-dark">Executar Integração</button></a>
             <a href="conexao.php?"><button style="margin-right: 10px;" type="button" class="btn btn-primary">Voltar</button></a>
       </div>
-      <div class="mt-4 text-center"> <?php echo $result_exec; ?>
+      <div class="mt-4 text-center"> <?php echo nl2br($result_exec); ?>
       </div>
+      <?php
+      if($idexe==1 and )
+      ?>
+  </body>
+</html>
