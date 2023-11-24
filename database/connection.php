@@ -1,8 +1,8 @@
 <?php
 
-$ServidorIntegracao = '172.17.135.151';
+$ServidorIntegracao = 'localhost';
 $portaIntegracao = '5433';
-$bdIntegracao = 'serverdados';
+$bdIntegracao = 'postgres';
 $usuarioIntegracao = 'postgres';
 $senhaIntegracao = 'esus'; 
 

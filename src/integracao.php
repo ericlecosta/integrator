@@ -127,8 +127,8 @@
         
         $sql = "select tn.nu_notificacao,tn.dt_notificacao,tn.co_municipio_notificacao,un.co_cnes,una.co_cnes as cnes_atual,un.ds_estabelecimento, 
         una.ds_estabelecimento as ds_estab_atual,tn.tp_notificacao,tn.dt_diagnostico_sintoma,tb.co_cid,tb.dt_notificacao_atual, 
-        dbsinan.decriptografanova(no_nome_paciente) as nome_pac,dbsinan.decriptografanova(no_nome_mae) as nome_mae,tn.dt_nascimento, 
-        tn.tp_sexo,tn.nu_cartao_sus,tn.ds_chave_fonetica,tn.co_municipio_residencia,tn.no_logradouro_residencia, 
+        replace(dbsinan.decriptografanova(no_nome_paciente),'''',' ') as nome_pac,replace(dbsinan.decriptografanova(no_nome_mae),'''',' ') as nome_mae,
+        tn.dt_nascimento,tn.tp_sexo,tn.nu_cartao_sus,tn.ds_chave_fonetica,tn.co_municipio_residencia,tn.no_logradouro_residencia, 
         case when tn.nu_residencia like '%$%' then translate(tn.nu_residencia,'$', '') else tn.nu_residencia end as nu_residencia,
         tn.no_bairro_residencia,tn.co_bairro_residencia,tn.nu_cep_residencia,dbsinan.decriptografanova(tn.nu_ddd_residencia) as nu_ddd, 
         dbsinan.decriptografanova(tn.nu_telefone_residencia) as nu_tel,tb.tp_entrada,tb.dt_inicio_tratamento,tb.nu_contato, 
@@ -155,15 +155,73 @@
         ) ultn on ultn.idnoti = (tn.nu_notificacao::text||tn.dt_notificacao::text)
         where tb.co_cid = 'A16.9' and tn.dt_notificacao > '2022-12-31';";
 
-        $conectarSINAN = @pg_connect("host=$ServidorSinan port=$portaSinan dbname=$bdSinan user=$usuarioSinan password=$senhaSinan");
+        $conectarSINAN = pg_connect("host=$ServidorSinan port=$portaSinan dbname=$bdSinan user=$usuarioSinan password=$senhaSinan");
 
-        $result = @pg_query($conectarSINAN,$sql);
+        $resultSinan = pg_query($conectarSINAN,$sql);
 
-        if($result) {
+        $sqldel = "delete from tb_tuberculose_sinan_temp;";
+
+        $conectarlocal = @pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
+
+        $resultLocal = pg_exec($conectarlocal, $sqldel);
+
+        if($resultSinan and $resultLocal) {
+        
+        while ($dadoSinan = pg_fetch_assoc($resultSinan)){ 
+          $nu_contato = $dadoSinan['nu_contato'];
+          $nu_contato_exam = $dadoSinan['nu_contato_examinado'];
+          $co_bairro_resid = $dadoSinan['co_bairro_residencia'];
+
+          $sqlIns = "insert into tb_tuberculose_sinan_temp (nu_notificacao,dt_notificacao,co_municipio_notificacao,co_cnes,cnes_atual,ds_estabelecimento,ds_estab_atual,tp_notificacao,
+          dt_diagnostico_sintoma,co_cid,dt_notificacao_atual,nome_pac,nome_mae,dt_nascimento,tp_sexo,nu_cartao_sus,ds_chave_fonetica,
+          co_municipio_residencia,no_logradouro_residencia,nu_residencia,no_bairro_residencia,nu_cep_residencia,nu_ddd,dnu_tel,
+          tp_entrada,dt_inicio_tratamento,nu_contato,nu_contato_examinado,tp_hiv,tp_situacao_encerramento,dt_encerramento,tp_transf,
+          tp_forma,tp_extrapulmonar_1,tp_extrapulmonar_2,st_baciloscopia_escarro,st_baciloscopia_escarro2,tp_cultura_escarro,
+          tp_cultura_outro,tp_histopatologia,tp_raio_x,tp_molecular,tp_tratamento,st_baciloscopia_1_mes,st_baciloscopia_2_mes,
+          st_baciloscopia_3_mes,st_baciloscopia_4_mes,st_baciloscopia_5_mes,st_baciloscopia_6_mes,st_bacil_apos_6_mes,tp_pop_imigrante,
+          tp_pop_liberdade,tp_pop_rua,tp_pop_saude,st_agravo_aids,st_agravo_alcolismo,st_agravo_diabete,st_agravo_drogas,st_agravo_mental,
+          st_agravo_outro,st_agravo_tabaco,tp_antirretroviral_trat,tp_sensibilidade,
+          co_bairro_residencia,nu_tel,tp_tratamento_acompanhamento) 
+          values ('{$dadoSinan['nu_notificacao']}','{$dadoSinan['dt_notificacao']}','{$dadoSinan['co_municipio_notificacao']}',
+          '{$dadoSinan['co_cnes']}','{$dadoSinan['cnes_atual']}','{$dadoSinan['ds_estabelecimento']}','{$dadoSinan['ds_estab_atual']}',
+          '{$dadoSinan['tp_notificacao']}','{$dadoSinan['dt_diagnostico_sintoma']}','{$dadoSinan['co_cid']}',
+          '{$dadoSinan['dt_notificacao_atual']}','{$dadoSinan['nome_pac']}','{$dadoSinan['nome_mae']}','{$dadoSinan['dt_nascimento']}',
+          '{$dadoSinan['tp_sexo']}','{$dadoSinan['nu_cartao_sus']}',
+          '{$dadoSinan['ds_chave_fonetica']}','{$dadoSinan['co_municipio_residencia']}','{$dadoSinan['no_logradouro_residencia']}',
+          '{$dadoSinan['nu_residencia']}','{$dadoSinan['no_bairro_residencia']}','{$dadoSinan['nu_cep_residencia']}',
+          '{$dadoSinan['nu_ddd']}','{$dadoSinan['nu_tel']}','{$dadoSinan['tp_entrada']}','{$dadoSinan['dt_inicio_tratamento']}',
+          '{$dadoSinan['nu_contato']}','{$dadoSinan['nu_contato_examinado']}',
+          '{$dadoSinan['tp_hiv']}','{$dadoSinan['tp_situacao_encerramento']}','{$dadoSinan['dt_encerramento']}',
+          '{$dadoSinan['tp_transf']}','{$dadoSinan['tp_forma']}','{$dadoSinan['tp_extrapulmonar_1']}',
+          '{$dadoSinan['tp_extrapulmonar_2']}','{$dadoSinan['st_baciloscopia_escarro']}','{$dadoSinan['st_baciloscopia_escarro2']}',
+          '{$dadoSinan['tp_cultura_escarro']}','{$dadoSinan['tp_cultura_outro']}','{$dadoSinan['tp_histopatologia']}',
+          '{$dadoSinan['tp_raio_x']}','{$dadoSinan['tp_molecular']}','{$dadoSinan['tp_tratamento']}','{$dadoSinan['st_baciloscopia_1_mes']}',
+          '{$dadoSinan['st_baciloscopia_2_mes']}','{$dadoSinan['st_baciloscopia_3_mes']}',
+          '{$dadoSinan['st_baciloscopia_4_mes']}','{$dadoSinan['st_baciloscopia_5_mes']}','{$dadoSinan['st_baciloscopia_6_mes']}',
+          '{$dadoSinan['st_bacil_apos_6_mes']}','{$dadoSinan['tp_pop_imigrante']}','{$dadoSinan['tp_pop_liberdade']}',
+          '{$dadoSinan['tp_pop_rua']}','{$dadoSinan['tp_pop_saude']}','{$dadoSinan['st_agravo_aids']}','{$dadoSinan['st_agravo_alcolismo']}',
+          '{$dadoSinan['st_agravo_diabete']}','{$dadoSinan['st_agravo_drogas']}',
+          '{$dadoSinan['st_agravo_mental']}','{$dadoSinan['st_agravo_outro']}','{$dadoSinan['st_agravo_tabaco']}','{$dadoSinan['tp_antirretroviral_trat']}',
+          '{$dadoSinan['tp_sensibilidade']}','{$dadoSinan['co_bairro_residencia']}',
+          '{$dadoSinan['nu_tel']}','{$dadoSinan['tp_tratamento_acompanhamento']}') ";
+
+          $resultLocal = pg_query($conectarlocal, $sqlIns);
+          }
+
+          $sqlren = "alter table tb_tuberculose_sinan rename to tb_tuberculose_sinan_old;";
+          $resultren = pg_exec($conectarlocal, $sqlren);
+
+          $sqlren = "alter table tb_tuberculose_sinan_temp rename to tb_tuberculose_sinan;";
+          $resultren = pg_exec($conectarlocal, $sqlren);
+
+          $sqlren = "alter table tb_tuberculose_sinan_old rename to tb_tuberculose_sinan_temp;";
+          $resultren = pg_exec($conectarlocal, $sqlren);
+        
           $st_sinan = $st_sinan+1;
           $sinan_result = "Dados do SINAN Importados";
           pg_close ($conectarSINAN);
-          echo "<meta HTTP-EQUIV='refresh' CONTENT='0;URL=http://localhost/integrator/src/integracao.php?id=4'>";
+          pg_close ($conectarlocal);
+          //echo "<meta HTTP-EQUIV='refresh' CONTENT='0;URL=http://localhost/integrator/src/integracao.php?id=4'>";
         } else {
           $sinan_result = "ERRO ao Importar Dados do SINAN!";
         }
@@ -197,7 +255,29 @@
 
         $conectarESUS = @pg_connect("host=$ServidorEsus port=$portaEsus dbname=$bdEsus user=$usuarioEsus password=$senhaEsus");
 
-        $result_pac = @pg_query($conectarESUS,$sql);
+        $resultpac = @pg_query($conectarESUS,$sql);
+
+
+        $sqldel = "delete from tb_tuberculose_esus_temp;";
+
+        $conectarlocal = @pg_connect("host=$ServidorIntegracao port=$portaIntegracao dbname=$bdIntegracao user=$usuarioIntegracao password=$senhaIntegracao");
+
+        $resultLocal = pg_exec($conectarlocal, $sqldel);
+
+        if($resultpac and $resultLocal) {
+        
+        while ($dadoEsus = pg_fetch_assoc($resultpac)){ 
+        
+          $sqlIns = "insert into tb_tuberculose_esus_temp (co_seq_fat_cidadao_pec,no_cidadao,nome_mae,dt_nasc,nu_cns,nu_cpf_cidadao,no_end,nu_numero,bairro_desc,
+          ds_cep,nu_telefone_celular,nu_telefone_residencial,nu_telefone_contato,nu_cnes,no_unidade_saude,nu_ine,
+          no_equipe)
+          values ('{$dadoEsus['']}','{$dadoEsus['no_cidadao']}','{$dadoEsus['nome_mae']}','{$dadoEsus['dt_nasc']}',
+          '{$dadoEsus['co_seq_fat_cidadao_pec']}','{$dadoEsus['']}','{$dadoEsus['']}','{$dadoEsus['']}',
+          '{$dadoEsus['nu_cns']}','{$dadoEsus['nu_cpf_cidadao']}','{$dadoEsus['no_end']}','{$dadoEsus['nu_numero']}',
+          '{$dadoEsus['bairro_desc']}','{$dadoEsus['ds_cep']}','{$dadoEsus['nu_telefone_celular']}','{$dadoEsus['nu_telefone_residencial']}',
+          '{$dadoEsus['nu_telefone_contato']}','{$dadoEsus['nu_cnes']}','{$dadoEsus['no_unidade_saude']}','{$dadoEsus['nu_ine']}',
+          '{$dadoEsus['no_equipe']}')";
+        }
 
         $sql = "select 1 as ativ_cod,'CONSULTA'::text as ativ_ds,fai.co_fat_cidadao_pec, dta.dt_registro as dt_atend, cb.nu_cbo, un.nu_cnes  
         from tb_fat_atendimento_individual fai 
